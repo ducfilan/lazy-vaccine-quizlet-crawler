@@ -1,0 +1,15 @@
+{
+  "name": "lazyvaccine-quizlet-crawler",
+  "version": "1.0.0",
+  "description": "Crawling data from quizlet for Lazy Vaccine",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Duc Hoang",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^13.7.0"
+  }
+}
