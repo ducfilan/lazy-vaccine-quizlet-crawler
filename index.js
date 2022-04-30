@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 let crawlURLs = [
-  'https://quizlet.com/gb/514633092/verbs-basic-1-grammar-chinese-gcse-91-flash-cards/'
+  'https://quizlet.com/695043520/shopee-chinese-beginner-2-lesson-3-11-flash-cards/'
 ];
 let exportURL = './result';
 
@@ -30,8 +30,10 @@ crawlURLs.forEach(async (crawlURL) => {
 
     for (let i = 0; i < terms.length; i++) {
       items.push({
+        type: "term-def",
         term: terms[i],
-        definition: definitions[i]
+        definition: definitions[i],
+        _id: "ObjectId()"
       })
     }
 
