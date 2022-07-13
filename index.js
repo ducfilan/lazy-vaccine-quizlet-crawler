@@ -1,23 +1,27 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
+const puppeteer = require('puppeteer')
+const fs = require('fs')
 
 let crawlURLs = [
-  'https://quizlet.com/695043520/shopee-chinese-beginner-2-lesson-3-11-flash-cards/'
-];
-let exportURL = './result';
+  'https://quizlet.com/vn/502569203/1000-tu-vung-cho-nguoi-mat-goc-1-1-flash-cards/'
+]
+let exportURL = './result'
 
 crawlURLs.forEach(async (crawlURL) => {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.goto(crawlURL, { waitUntil: 'networkidle0' });
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
 
+  console.log(`Going to ${crawlURL}`)
+  await page.goto(crawlURL, { waitUntil: 'networkidle0' })
+
+  console.log(`Getting title`)
   const setTitle = await page.evaluate(() => {
-    t = document.getElementsByClassName('UIHeading UIHeading--one')[0].innerText
-    return t;
+    const title = document.querySelector('.SetPage-titleWrapper h1').innerText
+    return title
   })
 
+  console.log(`Getting items`)
   const setItems = await page.evaluate(() => {
-    let itemNodes = [...document.querySelectorAll('div.SetPageTerm-content')];
+    let itemNodes = [...document.querySelectorAll('div.SetPageTerm-content')]
 
     let itemsChildNodes = [...itemNodes.map(e => ({
       childNode: e.childNodes
@@ -37,25 +41,25 @@ crawlURLs.forEach(async (crawlURL) => {
       })
     }
 
-    return items;
-  });
+    return items
+  })
 
   try {
     if (!fs.existsSync(`${exportURL}`)) {
       fs.mkdir(`${exportURL}`, err => {
-        if (err) return console.error(err);
+        if (err) return console.error(err)
 
-        console.log(`Created dir: ${exportURL}/${setTitle}`);
-      });
+        console.log(`Created dir: ${exportURL}/${setTitle}`)
+      })
     }
 
     fs.writeFile(`${exportURL}/${setTitle}.json`, JSON.stringify(setItems), err => {
-      if (err) return console.log(err);
+      if (err) return console.log(err)
 
-      console.log(`Done writing from set: ${setTitle}`);
+      console.log(`Done writing from set: ${setTitle}`)
     })
   } catch (error) {
     console.log(error)
   }
-  await browser.close();
-});
+  await browser.close()
+})
